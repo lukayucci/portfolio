@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Hurricane&family=Lora:ital,wght@0,400..700;1,400..700&family=Oldenburg&family=Sirin+Stencil&family=Sixtyfour&family=Space+Grotesk:wght@300..700&family=Tapestry&display=swap"
+        rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Luka García Yucci</title>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__container">
+
+
+            <button class="header__toggle" aria-label="Abrir menú" id="menu-btn">
+                <span class="header__hamburger"></span>
+            </button>
+
+            <nav class="nav" id="main-nav">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="#skills-section" class="nav__link">Mis Skills</a></li>
+                    <li class="nav__item"><a href="#soft-skills" class="nav__link">Soft Skills</a></li>
+                    <li class="nav__item"><a href="#proyectos" class="nav__link">Mis Proyectos</a></li>
+                    <li class="nav__item"><a href="#contacto" class="nav__link">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero">
+
+            <div class="hero__image-wrapper">
+                <img class="hero__image" src="imagenes/luka.png" alt="yo">
+                <div class="hero__gradient-overlay"></div>
+            </div>
+
+            <div class="hero__content">
+                <h1 class="hero__title">
+                    <span class="hero__name">LUKA GARCÍA YUCCI //</span>
+                    <span class="hero__role">PROGRAMADOR WEB FRONTEND</span>
+                </h1>
+
+                <p class="hero__bio">
+                    Soy Luka García Yucci, un desarrollador enfocado en crear productos digitales que no solo se vean
+                    bien, sino que se sientan naturales al usarlos. Mi objetivo es fusionar una visión estética basada
+                    en principios de diseño UI/UX con una arquitectura de código sólida en Frontend. Me apasiona
+                    resolver problemas de usuario mediante interfaces elegantes, semánticas y con una atención obsesiva
+                    al detalle en cada interacción.
+                </p>
+            </div>
+        </section>
+
+        <section class="skills" id="skills-section">
+            <div class="skills__visual">
+                <canvas id="skills-canvas" class="skills__canvas"></canvas>
+                <div class="skills__overlay"></div>
+            </div>
+
+            <div class="skills__content" id="skills-content">
+                <h2 class="skills__title">Tech Stack //</h2>
+                <div class="skills__grid">
+                    <article class="skills__card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+                            alt="HTML5" class="skills__icon">
+                        <span class="skills__name">HTML5</span>
+                    </article>
+                    <article class="skills__card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3"
+                            class="skills__icon">
+                        <span class="skills__name">CSS3</span>
+                    </article>
+                    <article class="skills__card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                            alt="JavaScript" class="skills__icon">
+                        <span class="skills__name">JavaScript</span>
+                    </article>
+                    <article class="skills__card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git"
+                            class="skills__icon">
+                        <span class="skills__name">Git</span>
+                    </article>
+                    <article class="skills__card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                            alt="GitHub" class="skills__icon">
+                        <span class="skills__name">GitHub</span>
+                    </article>
+                    <article class="skills__card">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"
+                            alt="VS Code" class="skills__icon">
+                        <span class="skills__name">VS Code</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="soft-skills" id="soft-skills">
+            <div class="soft-skills__container">
+                <h2 class="soft-skills__title">Soft Skills //</h2>
+                <div class="soft-skills__grid">
+                    <article class="soft-skills__card">
+                        <div class="soft-skills__icon-wrapper">
+                            <i class="fa-solid fa-message icon-soft"></i>
+                        </div>
+                        <h3 class="soft-skills__name">Comunicación Transparente</h3>
+                        <i class="fa-solid fa-caret-down accordion__toggle"></i>
+                        <p class="soft-skills__description">Capacidad de transmitir ideas técnicas complejas de manera
+                            simple y concisa a diferentes perfiles, manteniendo siempre un canal de retroalimentación
+                            activo.</p>
+                    </article>
+                    <article class="soft-skills__card">
+                        <div class="soft-skills__icon-wrapper">
+                            <i class="fa-solid fa-heart icon-soft"></i>
+                        </div>
+                        <h3 class="soft-skills__name">Sinergia en Equipo</h3>
+                        <i class="fa-solid fa-caret-down accordion__toggle"></i>
+                        <p class="soft-skills__description">Actitud colaborativa para potenciar el talento del grupo. Me
+                            integro fácilmente en flujos de trabajo compartidos para alcanzar objetivos de alto impacto.
+                        </p>
+                    </article>
+                    <article class="soft-skills__card">
+                        <div class="soft-skills__icon-wrapper">
+                            <i class="fa-solid fa-brain icon-soft"></i>
+                        </div>
+                        <h3 class="soft-skills__name">Resolución Compleja</h3>
+                        <i class="fa-solid fa-caret-down accordion__toggle"></i>
+                        <p class="soft-skills__description">Enfoque lógico y analítico para diagnosticar cuellos de
+                            botella y programar soluciones eficientes, escalables y orientadas al largo plazo.</p>
+                    </article>
+                    <article class="soft-skills__card">
+                        <div class="soft-skills__icon-wrapper">
+                            <i class="fa-solid fa-clock icon-soft"></i>
+                        </div>
+                        <h3 class="soft-skills__name">Gestión Ágil</h3>
+                        <i class="fa-solid fa-caret-down accordion__toggle"></i>
+                        <p class="soft-skills__description">Priorización estratégica de tareas para maximizar la
+                            productividad, entregando software de calidad y respetando estrictamente los deadlines del
+                            proyecto.</p>
+                    </article>
+                    <article class="soft-skills__card">
+                        <div class="soft-skills__icon-wrapper">
+                            <i class="fa-solid fa-plant-wilt icon-soft"></i>
+                        </div>
+                        <h3 class="soft-skills__name">Adaptabilidad Dinámica</h3>
+                        <i class="fa-solid fa-caret-down accordion__toggle"></i>
+                        <p class="soft-skills__description">Resiliencia y velocidad para adoptar nuevas tecnologías,
+                            lenguajes o paradigmas en entornos de desarrollo que evolucionan constantemente.</p>
+                    </article>
+                    <article class="soft-skills__card">
+                        <div class="soft-skills__icon-wrapper">
+                            <i class="fa-solid fa-lightbulb icon-soft"></i>
+                        </div>
+                        <h3 class="soft-skills__name">Creatividad UI/UX</h3>
+                        <i class="fa-solid fa-caret-down accordion__toggle"></i>
+                        <p class="soft-skills__description">Habilidad para fusionar principios artísticos de diseño
+                            gráfico con la estructura lógica del código, creando experiencias inmersivas y memorables.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+
+        <h2 class="title__projects" id="proyectos">Mis Proyectos</h2>
+        <section class="projects">
+            <div class="carrousel__projects">
+                <article class="carrousel__item">
+                    <img src="imagenes/stride.png" alt="Stride">
+                    <a href="https://lukayucci.github.io/Stride/" target="_blank" class="carrousel__link">Stride |
+                        E-commerce</a>
+                </article>
+
+                <article class="carrousel__item">
+                    <img src="imagenes/instituto-geriatrio.png" alt="Geriatrico Los Santos">
+                    <a href="https://lukayucci.github.io/Instituto-Geriatrico-SRL/" target="_blank"
+                        class="carrousel__link">Instituto De Los Santos</a>
+                </article>
+
+                <article class="carrousel__item">
+                    <img src="imagenes/nexor.png" alt="Nexor">
+                    <a href="https://pxp2p.github.io/nexor/" target="_blank" class="carrousel__link">Nexor</a>
+                </article>
+            </div>
+
+            <ul class="puntos">
+                <li class="punto"></li>
+                <li class="punto"></li>
+                <li class="punto"></li>
+            </ul>
+        </section>
+
+        <!-- Wrapper exclusivo para la sección de transición (contacto) -->
+        <div class="scroll-jack-wrapper" id="cinematic-track">
+
+            <div class="cinematic-scene cinematic-scene--contact" id="scene-contact">
+                <section class="contact" id="contacto">
+                    <h2 class="contact__title" id="contacto">contactame //</h2>
+                    <div class="contact__socials">
+                        <a href="https://wa.me/1159604801" class="social-link social-link--whatsapp" target="_blank"
+                            aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/" class="social-link social-link--linkedin" target="_blank"
+                            aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/lukazero__/" class="social-link social-link--instagram"
+                            target="_blank" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://github.com/lukayucci" class="social-link social-link--github" target="_blank"
+                            aria-label="GitHub">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Las cortinas de la transición ahora son globales -->
+    <div class="fixed-curtains">
+        <div class="curtain curtain--left"></div>
+        <div class="curtain curtain--right"></div>
+        <div class="curtain curtain--top"></div>
+        <div class="curtain curtain--bottom"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
