@@ -1,0 +1,586 @@
+---
+import { Image } from 'astro:assets';
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+import { projects } from '../data/projects';
+import type { Localized } from '../data/types';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+function pick<T>(value: Localized<T>): T {
+  return value[lang];
+}
+
+const statusLabel = (status: 'production' | 'public') =>
+  status === 'production' ? t('work.statusProduction') : t('work.statusPublic');
+
+const meta = `${String(projects.length).padStart(2, '0')} — ${t('work.cases')}`;
+---
+
+<section class="work" id="work">
+  <div class="work__inner">
+    <header class="work__head">
+      <p class="work__label mono">(02) — {t('work.label')}</p>
+      <p class="work__meta mono">{meta}</p>
+    </header>
+
+    <p class="work__lead" data-reveal>{t('work.lead')}</p>
+
+    <div class="work__list">
+      {
+        projects.map((project, i) => (
+          <article class="project" data-reveal>
+            <header class="project__head">
+              <span class="project__index mono">{String(i + 1).padStart(2, '0')}</span>
+              <div class="project__titles">
+                <h3 class="project__title">{project.title}</h3>
+                <p class="project__subtitle">{pick(project.subtitle)}</p>
+              </div>
+              <span class:list={['project__status', 'mono', `project__status--${project.status}`]}>
+                <i aria-hidden="true" />
+                {statusLabel(project.status)}
+              </span>
+            </header>
+
+            <div class="project__media">
+              <figure class="project__cover">
+                <div class="frame" aria-hidden="true">
+                  <span class="frame__dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <span class="frame__url mono">
+                    {project.title} · {pick(project.subtitle)}
+                  </span>
+                </div>
+                <div class="project__shot">
+                  <Image
+                    src={project.cover.src}
+                    alt={pick(project.cover.alt)}
+                    widths={[640, 960, 1280, 1600]}
+                    sizes="(min-width: 1100px) 66vw, 100vw"
+                    format="webp"
+                    quality={84}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <span class="project__badge mono">
+                  case study / {String(i + 1).padStart(2, '0')}
+                </span>
+              </figure>
+
+              {project.gallery.length > 0 && (
+                <div class="project__thumbs">
+                  {project.gallery.map((item) => (
+                    <figure class="project__thumb">
+                      <Image
+                        src={item.src}
+                        alt={pick(item.alt)}
+                        widths={[480, 800]}
+                        sizes="(min-width: 1000px) 32vw, 50vw"
+                        format="webp"
+                        quality={82}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </figure>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="project__body">
+              <div class="project__copy">
+                <p class="project__summary">{pick(project.summary)}</p>
+
+                <div class="project__block">
+                  <p class="project__block-title mono">{t('work.context')}</p>
+                  <p class="project__context">{pick(project.context)}</p>
+                </div>
+
+                <div class="project__block">
+                  <p class="project__block-title mono">{t('work.built')}</p>
+                  <ul class="project__highlights">
+                    {pick(project.highlights).map((item, j) => (
+                      <li>
+                        <span class="mono">{String(j + 1).padStart(2, '0')}</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <p class="project__result">
+                  <span class="mono">{t('work.result')}</span>
+                  {pick(project.result)}
+                </p>
+              </div>
+
+              <aside class="project__meta">
+                <dl class="project__facts">
+                  <div class="project__fact">
+                    <dt class="mono">{t('work.role')}</dt>
+                    <dd>{pick(project.role)}</dd>
+                  </div>
+                  <div class="project__fact">
+                    <dt class="mono">{t('work.year')}</dt>
+                    <dd>{project.year}</dd>
+                  </div>
+                  <div class="project__fact">
+                    <dt class="mono">{t('work.status')}</dt>
+                    <dd>{statusLabel(project.status)}</dd>
+                  </div>
+                </dl>
+
+                <div class="project__stack">
+                  <p class="project__block-title mono">{t('work.stack')}</p>
+                  <ul class="project__chips">
+                    {project.stack.map((tech) => (
+                      <li class="mono">{tech}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="project__links">
+                  {project.repoUrl && (
+                    <a
+                      class="project__link"
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>{t('work.repo')}</span>
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  {project.demoUrl && (
+                    <a
+                      class="project__link"
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>{t('work.demo')}</span>
+                      <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                  {project.repoPrivate && (
+                    <p class="project__private mono">{t('work.private')}</p>
+                  )}
+                </div>
+              </aside>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    position: relative;
+    z-index: 10;
+    background: var(--bg);
+    color: var(--fg);
+    padding: clamp(5rem, 12vw, 10rem) var(--gutter);
+    border-top: 1px solid var(--line);
+  }
+
+  .work__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .work__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+  }
+
+  .work__meta {
+    color: var(--muted-2);
+  }
+
+  .work__lead {
+    max-width: 22ch;
+    margin: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2rem, 4.8vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+  }
+
+  .work__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .project + .project {
+    margin-top: clamp(3rem, 8vw, 7rem);
+    border-top: 1px solid var(--line);
+    padding-top: clamp(3rem, 8vw, 7rem);
+  }
+
+  .project__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .project__index {
+    color: var(--accent);
+    padding-top: 0.45rem;
+  }
+
+  .project__title {
+    font-size: clamp(2rem, 4.4vw, 3.8rem);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+  }
+
+  .project__subtitle {
+    margin-top: 0.55rem;
+    color: var(--muted);
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    letter-spacing: -0.01em;
+  }
+
+  .project__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.6rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .project__status i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .project__status--production {
+    color: var(--accent);
+  }
+
+  .project__status--public {
+    color: var(--muted);
+  }
+
+  .project__media {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .project__cover {
+    position: relative;
+    margin: 0;
+    border: 1px solid var(--line);
+    background: #0b0d10;
+    overflow: hidden;
+  }
+
+  .frame {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .frame__dots {
+    display: inline-flex;
+    gap: 0.3rem;
+    flex: none;
+  }
+
+  .frame__dots i {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted-2);
+  }
+
+  .frame__url {
+    min-width: 0;
+    color: var(--muted-2);
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project__shot {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .project__shot :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .project__cover:hover .project__shot :global(img) {
+    transform: scale(1.02);
+  }
+
+  .project__badge {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.32rem 0.48rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    line-height: 1;
+  }
+
+  .project__thumbs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .project__thumb {
+    margin: 0;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--line);
+    background: #0b0d10;
+    overflow: hidden;
+  }
+
+  .project__thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .project__thumb:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .project__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .project__copy {
+    max-width: 64ch;
+  }
+
+  .project__summary {
+    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+  }
+
+  .project__block {
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .project__block-title {
+    color: var(--muted-2);
+    margin-bottom: 0.85rem;
+  }
+
+  .project__context {
+    color: rgba(242, 240, 233, 0.68);
+    font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+    line-height: 1.7;
+  }
+
+  .project__highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .project__highlights li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+    line-height: 1.55;
+  }
+
+  .project__highlights .mono {
+    flex: none;
+    min-width: 2rem;
+    padding-top: 0.15rem;
+    color: var(--muted-2);
+  }
+
+  .project__result {
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.65;
+  }
+
+  .project__result .mono {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .project__meta {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+  }
+
+  .project__facts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .project__fact {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .project__fact dt {
+    color: var(--muted-2);
+  }
+
+  .project__fact dd {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .project__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .project__chips li {
+    padding: 0.36rem 0.5rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.56rem;
+    letter-spacing: 0.1em;
+  }
+
+  .project__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+  }
+
+  .project__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+    transition:
+      color 0.3s var(--ease-out),
+      padding-left 0.3s var(--ease-out);
+  }
+
+  .project__link:hover {
+    color: var(--accent);
+    padding-left: 0.4rem;
+  }
+
+  .project__private {
+    color: var(--muted-2);
+    font-size: 0.58rem;
+  }
+
+  @media (min-width: 1000px) {
+    .project__body {
+      grid-template-columns: minmax(0, 1.65fr) minmax(260px, 0.7fr);
+    }
+
+    .project__meta {
+      border-top: 0;
+      padding-top: 0;
+      border-left: 1px solid var(--line);
+      padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .project__head {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .project__status {
+      grid-column: 2;
+      padding-top: 0;
+    }
+
+    .project__thumbs {
+      gap: 0.5rem;
+    }
+
+    .project__fact {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+
+    .project__badge {
+      left: 0.5rem;
+      bottom: 0.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project__cover:hover .project__shot :global(img),
+    .project__thumb:hover :global(img),
+    .project__link:hover {
+      transform: none;
+      padding-left: 0;
+    }
+  }
+</style>

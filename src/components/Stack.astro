@@ -1,0 +1,232 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+import { stackGroups } from '../data/stack';
+import type { Localized } from '../data/types';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+function pick<T>(value: Localized<T>): T {
+  return value[lang];
+}
+---
+
+<section class="stack" id="stack">
+  <div class="stack__inner">
+    <header class="stack__head">
+      <p class="stack__label mono">(03) — {t('stack.label')}</p>
+      <p class="stack__meta mono">{t('stack.meta')}</p>
+    </header>
+
+    <p class="stack__lead" data-reveal>{t('stack.lead')}</p>
+
+    <div class="stack__list">
+      {
+        stackGroups.map((group, i) => (
+          <div class="stack__row" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+            <span class="stack__index mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="stack__name">
+              {pick(group.title)}
+              {group.badge && <span class="stack__badge mono">{group.badge}</span>}
+            </h3>
+            <ul class="stack__items">
+              {group.items.map((item) => (
+                <li class="mono">{item}</li>
+              ))}
+            </ul>
+            <p class="stack__note">{pick(group.note)}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="stack__foot" data-reveal>
+      <span class="stack__dot" aria-hidden="true" />
+      <span>{t('stack.note')}</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .stack {
+    position: relative;
+    z-index: 10;
+    background: var(--paper);
+    color: var(--ink);
+    padding: clamp(5rem, 12vw, 10rem) var(--gutter);
+  }
+
+  .stack__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .stack__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(11, 11, 12, 0.16);
+    color: rgba(11, 11, 12, 0.55);
+  }
+
+  .stack__meta {
+    color: rgba(11, 11, 12, 0.4);
+  }
+
+  .stack__lead {
+    max-width: 24ch;
+    margin: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2rem, 4.8vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+  }
+
+  .stack__list {
+    border-top: 1px solid rgba(11, 11, 12, 0.16);
+  }
+
+  .stack__row {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(150px, 0.7fr) minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: 1.4rem 0.75rem 1.4rem 0.75rem;
+    border-bottom: 1px solid rgba(11, 11, 12, 0.16);
+    transition:
+      background-color 0.35s var(--ease-out),
+      padding-left 0.35s var(--ease-out);
+  }
+
+  .stack__row:hover {
+    background: rgba(11, 11, 12, 0.035);
+    padding-left: 1.25rem;
+  }
+
+  .stack__index {
+    color: rgba(11, 11, 12, 0.35);
+    padding-top: 0.35rem;
+    transition: color 0.3s var(--ease-out);
+  }
+
+  .stack__row:hover .stack__index {
+    color: var(--ink);
+  }
+
+  .stack__name {
+    font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+
+  .stack__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .stack__items li {
+    padding: 0.36rem 0.5rem;
+    border: 1px solid rgba(11, 11, 12, 0.2);
+    color: rgba(11, 11, 12, 0.72);
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    transition:
+      background-color 0.3s var(--ease-out),
+      color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+  }
+
+  .stack__row:hover .stack__items li {
+    border-color: rgba(11, 11, 12, 0.42);
+    color: var(--ink);
+  }
+
+  .stack__note {
+    color: rgba(11, 11, 12, 0.6);
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    line-height: 1.6;
+    max-width: 40ch;
+  }
+
+  .stack__foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    max-width: 62ch;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    color: rgba(11, 11, 12, 0.6);
+    font-size: clamp(0.92rem, 1.2vw, 1.02rem);
+    line-height: 1.65;
+  }
+
+  .stack__dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-top: 0.55rem;
+    background: var(--ink);
+  }
+
+  @media (max-width: 799px) {
+    .stack__row {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: 0.5rem 1rem;
+      padding: 1.25rem 0;
+    }
+
+    .stack__row:hover {
+      padding-left: 0;
+    }
+
+    .stack__name {
+      grid-column: 2;
+    }
+
+    .stack__items,
+    .stack__note {
+      grid-column: 1 / -1;
+    }
+
+  .stack__badge {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.6rem;
+    padding: 0.22rem 0.4rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    line-height: 1;
+  }
+
+  .stack__items {
+      margin-top: 0.35rem;
+    }
+
+    .stack__note {
+      max-width: none;
+    }
+
+    .stack__index {
+      padding-top: 0.2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack__row:hover {
+      padding-left: 0.75rem;
+    }
+  }
+</style>

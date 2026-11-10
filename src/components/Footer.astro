@@ -1,0 +1,200 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+import { socials } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  nav: { href: string; label: string }[];
+}
+
+const { lang, nav } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__wordmark" aria-hidden="true">Luka García Yucci</p>
+
+    <div class="footer__grid">
+      <div class="footer__col">
+        <p class="footer__kicker mono">LGY / Buenos Aires</p>
+        <p class="footer__tagline">{t('footer.tagline')}</p>
+      </div>
+
+      <nav class="footer__col" aria-label={t('footer.index')}>
+        <p class="footer__label mono">{t('footer.index')}</p>
+        <ul class="footer__links">
+          {nav.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <p class="footer__label mono">{t('footer.social')}</p>
+        <ul class="footer__links">
+          <li>
+            <a href={socials.email.href}>
+              Email <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href={socials.github.href} target="_blank" rel="noopener noreferrer">
+              GitHub <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href={socials.instagram.href} target="_blank" rel="noopener noreferrer">
+              Instagram <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href={socials.whatsapp.href} target="_blank" rel="noopener noreferrer">
+              WhatsApp <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <a class="footer__top" href="#top">
+        <span>{t('footer.top')}</span>
+        <span aria-hidden="true">↑</span>
+      </a>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© {year} Luka García Yucci</span>
+      <span class="mono">Buenos Aires, AR</span>
+      <span class="mono">{t('footer.made')}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    padding: clamp(3rem, 7vw, 5.5rem) var(--gutter) 1.75rem;
+  }
+
+  .footer__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .footer__wordmark {
+    margin: 0 0 clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2rem, 10.5vw, 10rem);
+    line-height: 0.82;
+    letter-spacing: -0.06em;
+    font-weight: 500;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(242, 240, 233, 0.22);
+    user-select: none;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    padding-top: clamp(1.5rem, 3vw, 2.25rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .footer__kicker,
+  .footer__label {
+    color: var(--muted-2);
+  }
+
+  .footer__tagline {
+    max-width: 28ch;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.92rem;
+  }
+
+  .footer__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted);
+    transition:
+      color 0.3s var(--ease-out),
+      padding-left 0.3s var(--ease-out);
+  }
+
+  .footer__links a:hover,
+  .footer__links a:focus-visible {
+    color: var(--accent);
+    padding-left: 0.3rem;
+  }
+
+  .footer__top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    align-self: start;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--muted);
+    transition:
+      color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+  }
+
+  .footer__top:hover,
+  .footer__top:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted-2);
+    font-size: 0.72rem;
+  }
+
+  @media (min-width: 800px) {
+    .footer__grid {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.7fr) minmax(0, 0.7fr) auto;
+      align-items: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__links a:hover,
+    .footer__links a:focus-visible {
+      padding-left: 0;
+    }
+  }
+</style>

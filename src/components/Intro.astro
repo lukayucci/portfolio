@@ -1,0 +1,391 @@
+---
+import { Picture } from 'astro:assets';
+import portrait from '../assets/imagenes/luka.png';
+
+interface Props {
+  label: string;
+  statementA: string;
+  statementB: string;
+  body: string;
+  listTitle: string;
+  items: string[];
+  stats: string[];
+  location: string;
+  photoAlt: string;
+  photoCaption: string;
+}
+
+const { label, statementA, statementB, body, listTitle, items, stats, location, photoAlt, photoCaption } =
+  Astro.props;
+---
+
+<section class="intro" id="intro">
+  <div class="intro__inner">
+    <header class="intro__head">
+      <p class="intro__label mono">(01) — {label}</p>
+      <p class="intro__meta mono">{location}</p>
+    </header>
+
+    <h2 class="intro__statement">
+      <span class="intro__line" data-reveal>{statementA}</span>
+      <span class="intro__line intro__line--outline" data-reveal style="--reveal-delay:120ms">
+        {statementB}
+      </span>
+    </h2>
+
+    <div class="intro__grid">
+      <div class="intro__aside">
+        <figure class="portrait" data-reveal>
+          <div class="portrait__frame">
+            <Picture
+              src={portrait}
+              alt={photoAlt}
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              widths={[320, 480, 720, 960]}
+              sizes="(min-width: 900px) 38vw, 150px"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="portrait__corner portrait__corner--tl" aria-hidden="true"></span>
+            <span class="portrait__corner portrait__corner--tr" aria-hidden="true"></span>
+            <span class="portrait__corner portrait__corner--bl" aria-hidden="true"></span>
+            <span class="portrait__corner portrait__corner--br" aria-hidden="true"></span>
+            <span class="portrait__tag mono">LGY / 01</span>
+          </div>
+          <figcaption class="portrait__caption mono">
+            <span>{photoCaption}</span>
+            <span aria-hidden="true">4:5</span>
+          </figcaption>
+        </figure>
+
+        <dl class="intro__stats" data-reveal style="--reveal-delay:120ms">
+          {stats.map((stat, i) => (
+            <div class="intro__stat">
+              <dt class="intro__stat-index mono">{String(i + 1).padStart(2, '0')}</dt>
+              <dd class="intro__stat-text">{stat}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div class="intro__body" data-reveal style="--reveal-delay:80ms">
+        <p class="intro__text">{body}</p>
+
+        <div class="intro__list-wrap">
+          <p class="intro__list-title mono">{listTitle}</p>
+          <ul class="intro__list">
+            {items.map((item, i) => (
+              <li>
+                <span class="intro__index mono">{String(i + 1).padStart(2, '0')}</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    position: relative;
+    z-index: 10;
+    background: var(--paper);
+    color: var(--ink);
+    padding: clamp(4.5rem, 11vw, 9rem) var(--gutter) clamp(5rem, 12vw, 10rem);
+  }
+
+  .intro__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .intro__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(11, 11, 12, 0.16);
+    color: rgba(11, 11, 12, 0.55);
+  }
+
+  .intro__statement {
+    margin: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(3rem, 7vw, 5.5rem);
+    font-size: clamp(2.3rem, 5.6vw, 5.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+  }
+
+  .intro__line {
+    display: block;
+  }
+
+  .intro__line--outline {
+    color: transparent;
+    -webkit-text-stroke: 1.2px rgba(11, 11, 12, 0.42);
+  }
+
+  .intro__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .intro__aside {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .portrait {
+    margin: 0;
+  }
+
+  .portrait__frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border: 1px solid rgba(11, 11, 12, 0.22);
+    background: #d9d5ca;
+  }
+
+  .portrait__frame :global(picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .portrait__frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 36%;
+    filter: grayscale(1) contrast(1.04);
+    transform: scale(1.01);
+    transition:
+      filter 0.7s var(--ease-out),
+      transform 1.1s var(--ease-out);
+  }
+
+  .portrait:hover .portrait__frame :global(img),
+  .portrait:focus-within .portrait__frame :global(img) {
+    filter: grayscale(0) contrast(1);
+    transform: scale(1.04);
+  }
+
+  .portrait__corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: rgba(11, 11, 12, 0.55);
+    border-style: solid;
+    border-width: 0;
+    pointer-events: none;
+  }
+
+  .portrait__corner--tl {
+    top: 8px;
+    left: 8px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+
+  .portrait__corner--tr {
+    top: 8px;
+    right: 8px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+  }
+
+  .portrait__corner--bl {
+    bottom: 8px;
+    left: 8px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+  }
+
+  .portrait__corner--br {
+    bottom: 8px;
+    right: 8px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  .portrait__tag {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.4rem 0.55rem;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+    line-height: 1;
+  }
+
+  .portrait__caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.7rem;
+    color: rgba(11, 11, 12, 0.5);
+    font-size: 0.6rem;
+  }
+
+  .intro__stats {
+    display: flex;
+    flex-direction: column;
+    margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+  }
+
+  .intro__stat {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid rgba(11, 11, 12, 0.16);
+  }
+
+  .intro__stat:last-child {
+    border-bottom: 1px solid rgba(11, 11, 12, 0.16);
+  }
+
+  .intro__stat-index {
+    color: rgba(11, 11, 12, 0.4);
+    min-width: 2rem;
+  }
+
+  .intro__stat-text {
+    margin: 0;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+  }
+
+  .intro__text {
+    max-width: 54ch;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(11, 11, 12, 0.72);
+  }
+
+  .intro__list-wrap {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .intro__list-title {
+    color: rgba(11, 11, 12, 0.45);
+    margin-bottom: 1rem;
+  }
+
+  .intro__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(11, 11, 12, 0.16);
+  }
+
+  .intro__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(11, 11, 12, 0.16);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    transition:
+      padding-left 0.4s var(--ease-out),
+      color 0.3s var(--ease-out);
+  }
+
+  .intro__list li:hover {
+    padding-left: 0.5rem;
+    color: #000;
+  }
+
+  .intro__index {
+    color: rgba(11, 11, 12, 0.4);
+    min-width: 2rem;
+  }
+
+  @media (max-width: 899px) {
+    .intro__grid {
+      gap: clamp(1.75rem, 5vw, 2.5rem);
+    }
+
+    .intro__aside {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .portrait {
+      flex: 0 0 34%;
+      max-width: 148px;
+    }
+
+    .portrait__caption {
+      display: none;
+    }
+
+    .portrait__corner {
+      width: 11px;
+      height: 11px;
+    }
+
+    .portrait__tag {
+      font-size: 0.45rem;
+      padding: 0.3rem 0.4rem;
+    }
+
+    .intro__stats {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .intro__stat {
+      padding: 0.5rem 0;
+      gap: 0.6rem;
+    }
+
+    .intro__stat-index {
+      min-width: 1.4rem;
+    }
+
+    .intro__stat-text {
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .intro__grid {
+      grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+      align-items: start;
+    }
+
+    .intro__aside {
+      position: sticky;
+      top: 5.5rem;
+      align-self: start;
+    }
+  }
+
+  @media (min-width: 900px) and (max-height: 820px) {
+    .intro__aside {
+      position: static;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro__list li:hover {
+      padding-left: 0;
+    }
+
+    .portrait:hover .portrait__frame :global(img),
+    .portrait:focus-within .portrait__frame :global(img) {
+      transform: scale(1.01);
+    }
+  }
+</style>

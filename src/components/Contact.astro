@@ -1,0 +1,256 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+import { socials } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const emailHref = `${socials.email.href}?subject=${encodeURIComponent(t('contact.subject'))}`;
+---
+
+<section class="contact" id="contact">
+  <div class="contact__inner">
+    <header class="contact__head">
+      <p class="contact__label mono">(04) — {t('contact.label')}</p>
+      <p class="contact__status mono">
+        <i aria-hidden="true" />
+        {t('header.available')}
+      </p>
+    </header>
+
+    <h2 class="contact__statement">
+      <span class="contact__line" data-reveal>{t('contact.statementA')}</span>
+      <span class="contact__line contact__line--outline" data-reveal style="--reveal-delay:120ms">
+        {t('contact.statementB')}
+      </span>
+    </h2>
+
+    <div class="contact__grid">
+      <div class="contact__copy" data-reveal>
+        <p class="contact__body">{t('contact.body')}</p>
+        <p class="contact__response mono">{t('contact.response')}</p>
+      </div>
+
+      <div class="contact__actions" data-reveal style="--reveal-delay:80ms">
+        <a class="contact__cta" href={emailHref}>
+          <span class="contact__cta-text">
+            <span class="contact__cta-label mono">{t('contact.emailLabel')}</span>
+            <span class="contact__cta-value">{socials.email.address}</span>
+          </span>
+          <span class="contact__arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <div class="contact__socials">
+          <span class="mono">{t('contact.or')}</span>
+          <a href={socials.whatsapp.href} target="_blank" rel="noopener noreferrer">
+            {socials.whatsapp.label} <span aria-hidden="true">↗</span>
+          </a>
+          <a href={socials.github.href} target="_blank" rel="noopener noreferrer">
+            {socials.github.label} <span aria-hidden="true">↗</span>
+          </a>
+          <a href={socials.instagram.href} target="_blank" rel="noopener noreferrer">
+            {socials.instagram.label} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--fg);
+    padding: clamp(5rem, 12vw, 10rem) var(--gutter) clamp(4.5rem, 10vw, 8rem);
+  }
+
+  .contact::after {
+    content: '';
+    position: absolute;
+    right: -18vw;
+    bottom: -30vw;
+    width: 55vw;
+    height: 55vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(214, 255, 63, 0.09), transparent 62%);
+    pointer-events: none;
+  }
+
+  .contact__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .contact__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+  }
+
+  .contact__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .contact__status i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .contact__statement {
+    margin: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.6rem, 7.5vw, 6.8rem);
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+    font-weight: 500;
+  }
+
+  .contact__line {
+    display: block;
+  }
+
+  .contact__line--outline {
+    color: transparent;
+    -webkit-text-stroke: 1.2px rgba(242, 240, 233, 0.42);
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: end;
+  }
+
+  .contact__body {
+    max-width: 44ch;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(242, 240, 233, 0.68);
+  }
+
+  .contact__response {
+    margin-top: 1.25rem;
+    color: var(--muted-2);
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.1rem, 2.4vw, 1.6rem) clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--line-strong);
+    font-size: clamp(1.05rem, 2vw, 1.5rem);
+    letter-spacing: -0.02em;
+    transition:
+      background-color 0.4s var(--ease-out),
+      color 0.4s var(--ease-out),
+      border-color 0.4s var(--ease-out);
+  }
+
+  .contact__cta-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+
+  .contact__cta-label {
+    color: var(--muted-2);
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.4s var(--ease-out);
+  }
+
+  .contact__cta-value {
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__cta:hover .contact__cta-label,
+  .contact__cta:focus-visible .contact__cta-label {
+    color: rgba(11, 11, 12, 0.62);
+  }
+
+  .contact__arrow {
+    font-size: 1.15em;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .contact__cta:hover,
+  .contact__cta:focus-visible {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .contact__cta:hover .contact__arrow,
+  .contact__cta:focus-visible .contact__arrow {
+    transform: translate(0.15em, -0.15em);
+  }
+
+  .contact__socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    color: var(--muted-2);
+  }
+
+  .contact__socials a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--fg);
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+  }
+
+  .contact__socials a:hover,
+  .contact__socials a:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  @media (min-width: 900px) {
+    .contact__grid {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact__cta:hover .contact__arrow,
+    .contact__cta:focus-visible .contact__arrow {
+      transform: none;
+    }
+  }
+</style>
