@@ -11,10 +11,17 @@ interface Props {
 
 const { lang, title, description } = Astro.props;
 const site = Astro.site ?? new URL('https://lukayucci.github.io');
-const canonical = new URL(Astro.url.pathname, site).href;
+const pathname = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(pathname, site).href;
 const esUrl = new URL(localizePath('es', '/'), site).href;
 const enUrl = new URL(localizePath('en', '/'), site).href;
 const base = import.meta.env.BASE_URL;
+const assetBase = base.endsWith('/') ? base : `${base}/`;
+const ogImage = new URL(`${assetBase}og-image-${lang}.png`, site).href;
+const ogAlt =
+  lang === 'es'
+    ? 'Tarjeta de Luka García Yucci — Desarrollador full-stack · IA local'
+    : 'Card for Luka García Yucci — Full-stack developer and local AI';
 ---
 
 <!doctype html>
@@ -46,7 +53,17 @@ const base = import.meta.env.BASE_URL;
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Luka García Yucci" />
     <meta property="og:locale" content={lang === 'es' ? 'es_AR' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_AR'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
   </head>
 
   <body id="top">
